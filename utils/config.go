@@ -96,19 +96,15 @@ func WriteConfigDefaults() error {
 }
 
 func WriteTimerDefaults() error {
-	if IsEmpty("./config/timer.json") {
-		timerDefault := TimerJson{
-			TrackedMinutes:      0,
-			TotalSessionMinutes: 0,
-			NumberOfCommits:     0,
-			LastUpdate:          "",
-		}
-
-		if err := writeJSON("./config/timer.json", timerDefault); err != nil {
-			return fmt.Errorf("error writing defaults to timer.json: %v", err)
-		}
+	timerDefault := TimerJson{
+		TrackedMinutes:      0,
+		TotalSessionMinutes: 0,
+		NumberOfCommits:     0,
+		LastUpdate:          "",
 	}
-
+	if err := writeJSON("./config/timer.json", timerDefault); err != nil {
+		return fmt.Errorf("error writing defaults to timer.json: %v", err)
+	}
 	return nil
 }
 

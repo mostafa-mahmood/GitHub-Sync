@@ -1,40 +1,69 @@
 /*
-Copyright © 2025 NAME HERE <EMAIL ADDRESS>
-
+Copyright © 2025 mostafa-mahmood
 */
 package cmd
 
 import (
 	"fmt"
+	"os"
+	"strconv"
+	"syscall"
 
+	"github.com/mostafa-mahmood/GitHub-Sync/utils"
 	"github.com/spf13/cobra"
 )
 
-// stopCmd represents the stop command
 var stopCmd = &cobra.Command{
 	Use:   "stop",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Terminates Background Process",
+	Long:  `Terminates background process and stop the tool`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("stop called")
+		// Check if PID file exists
+		if !utils.Exists("./config/ghs.pid") {
+			fmt.Println("❌ No tracking process found")
+			return
+		}
+
+		// Read the PID file
+		pidData, err := os.ReadFile("./config/ghs.pid")
+		if err != nil {
+			fmt.Println("❌ Error reading process ID:", err)
+			return
+		}
+
+		// Parse the PID
+		pid, err := strconv.Atoi(string(pidData))
+		if err != nil {
+			fmt.Println("❌ Invalid process ID in file")
+			os.Remove("./config/ghs.pid")
+			return
+		}
+
+		// Find the process
+		process, err := os.FindProcess(pid)
+		if err != nil {
+			fmt.Println("❌ Process not found")
+			os.Remove("./config/ghs.pid")
+			return
+		}
+
+		// Kill the process
+		err = process.Signal(syscall.SIGTERM) // Try graceful termination first
+		if err != nil {
+			// If graceful termination fails, try force kill
+			err = process.Kill()
+			if err != nil {
+				fmt.Println("❌ Failed to stop tracking process:", err)
+				return
+			}
+		}
+
+		// Remove the PID file
+		os.Remove("./config/ghs.pid")
+		fmt.Println("✅ Tracking stopped successfully")
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(stopCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// stopCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// stopCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

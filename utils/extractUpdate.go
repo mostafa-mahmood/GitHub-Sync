@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -44,10 +45,12 @@ func GetPAT() (string, error) {
 	if err != nil {
 		return "", err
 	}
+	configStruct.GithubPAT = strings.TrimSpace(configStruct.GithubPAT)
 	return configStruct.GithubPAT, nil
 }
 
 func WritePAT(pat string) error {
+	pat = strings.TrimSpace(pat)
 	return updateConfig(func(c *ConfigJson) error {
 		c.GithubPAT = pat
 		return nil

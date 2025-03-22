@@ -31,6 +31,7 @@ func StartTracking() {
 	}
 
 	pat, err := utils.GetPAT()
+	pat = strings.TrimSpace(pat)
 	if err != nil {
 		fmt.Println("❌", err)
 		os.Exit(1)
@@ -175,6 +176,4 @@ func StartTracking() {
 		fmt.Print(err)
 		os.Exit(1)
 	}
-
-	fmt.Println("⏳ Tracking Started, Happy Coding")
 }

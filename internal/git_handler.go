@@ -17,6 +17,7 @@ func IsRepoCloned() bool {
 }
 
 func CloneRepo(username, PAT string) error {
+	PAT = strings.TrimSpace(PAT)
 	repoPath := "repo"
 	repoActivitiesPath := "repo/Activities"
 
@@ -88,16 +89,19 @@ func EnsureRepoFiles() error {
 		content := []byte(`
 ### Hey there, fellow coder! 👋  
 
-### What is this?
-Ever coded for hours, finally pushed your changes, and GitHub was like: **"Oh, so you only worked today, huh?"**  
-Yeah, same. GitHub activity tracking is a bit... let’s say, "unreliable" (*cough* unfair *cough*).  
-This is Where [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) comes to the save
+## What is this?
+Ever coded daily for hours and finally pushed your changes after a while, and GitHub was like: **"Oh, so you only worked today, huh?"**
+And it counts as a single contribution for the whole week.  
+Yeah, same. GitHub activity tracking is a bit... let’s say, "unreliable" (*cough* unfair *cough*)
+And the contribution graph might be the only way for others to know your coding activity.
 
-### How does this work?
+That’s where [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) comes to the save
+
+## How does this work?
 This bad boy keeps track of your local coding sessions. If your editor is open, it counts the minutes.
 Once you hit 100 minutes, BAM 💥 — an automatic push to GitHub happens.
 
-### Why?
+## Why?
 - So GitHub shows you actually code and don’t just show up once a week.  
 - So your contribution graph looks like a masterpiece, not a graveyard.
 

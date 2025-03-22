@@ -11,6 +11,7 @@ import (
 
 // checks if the special repo already exists
 func SpecialRepoExists(PAT string) (bool, error) {
+	PAT = strings.TrimSpace(PAT)
 	username, err := GetGitHubUsername(PAT)
 	if err != nil {
 		return false, err
@@ -44,6 +45,7 @@ func SpecialRepoExists(PAT string) (bool, error) {
 
 // creates the special repo the tool will be pushing to
 func CreateSpecialRepo(PAT string) error {
+	PAT = strings.TrimSpace(PAT)
 	data := `{
 		"name": "Activities",
 		"private": false,
@@ -76,6 +78,7 @@ func CreateSpecialRepo(PAT string) error {
 
 // checks if the provided GitHub Personal Access Token is valid
 func IsPatValid(PAT string) (bool, error) {
+	PAT = strings.TrimSpace(PAT)
 	client := &http.Client{Timeout: 5 * time.Second}
 
 	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
@@ -100,6 +103,7 @@ func IsPatValid(PAT string) (bool, error) {
 
 // reterives github user name using Personal Access Token
 func GetGitHubUsername(PAT string) (string, error) {
+	PAT = strings.TrimSpace(PAT)
 	client := &http.Client{Timeout: 5 * time.Second}
 	req, err := http.NewRequest("GET", "https://api.github.com/user", nil)
 	if err != nil {
