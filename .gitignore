@@ -1,2 +1,4 @@
 .env
 design/
+ghs*
+repo/

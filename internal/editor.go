@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func IsEditorOpened() (bool, error) {
+func IsEditorOpened() (bool, string, error) {
 
 	// windows, linux, darwin (mac os)
 	os := runtime.GOOS
@@ -21,11 +21,11 @@ func IsEditorOpened() (bool, error) {
 	case "linux", "darwin":
 		output, err = exec.Command("ps", "aux").Output()
 	default:
-		return false, fmt.Errorf("unsupported os")
+		return false, "", fmt.Errorf("unsupported os")
 	}
 
 	if err != nil {
-		return false, fmt.Errorf("error executing os command")
+		return false, "", fmt.Errorf("error executing os command")
 	}
 
 	editors := []string{
@@ -45,8 +45,8 @@ func IsEditorOpened() (bool, error) {
 
 	for _, editor := range editors {
 		if strings.Contains(outputstr, editor) {
-			return true, nil
+			return true, editor, nil
 		}
 	}
-	return false, nil
+	return false, "", nil
 }

@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"encoding/json"
@@ -42,12 +42,12 @@ func SpecialRepoExists(PAT string) (bool, error) {
 	return true, nil
 }
 
-// creates the special repo the tool will be pusing to
+// creates the special repo the tool will be pushing to
 func CreateSpecialRepo(PAT string) error {
 	data := `{
 		"name": "Activities",
 		"private": false,
-		"auto_init": true
+		"auto_init": false
 	}`
 
 	req, err := http.NewRequest("POST", "https://api.github.com/user/repos", strings.NewReader(data))
