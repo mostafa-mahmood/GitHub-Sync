@@ -1,5 +1,6 @@
 .env
-Design/
+design/
 ghs*
 ghs.exe*
 repo/
+config/

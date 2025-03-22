@@ -2,16 +2,16 @@ package utils
 
 import (
 	"fmt"
+	"path/filepath"
 	"strings"
 	"time"
 )
 
-const (
-	configPath = "./config/config.json"
-	timerPath  = "./config/timer.json"
+var (
+	configPath = filepath.Join(".", "config", "config.json")
+	timerPath  = filepath.Join(".", "config", "timer.json")
 )
 
-// UpdateConfig provides a generic way to update the config file
 func updateConfig(modifier func(*ConfigJson) error) error {
 	configStruct, err := ReadConfig()
 	if err != nil {
@@ -39,7 +39,6 @@ func updateTimer(modifier func(*TimerJson) error) error {
 	return writeJSON(timerPath, timerStruct)
 }
 
-// Config operations
 func GetPAT() (string, error) {
 	configStruct, err := ReadConfig()
 	if err != nil {

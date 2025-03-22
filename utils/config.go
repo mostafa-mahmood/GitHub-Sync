@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 type TimerJson struct {
@@ -20,18 +21,15 @@ type ConfigJson struct {
 }
 
 func CreateConfigDirectories() error {
-
-	if state := Exists("./repo"); !state {
-		err := os.Mkdir("./repo", 0777)
-
+	if state := Exists(filepath.Join(".", "repo")); !state {
+		err := os.Mkdir(filepath.Join(".", "repo"), 0755)
 		if err != nil {
 			return fmt.Errorf("error creating repo directory: %v", err)
 		}
 	}
 
-	if state := Exists("./config"); !state {
-		err := os.Mkdir("./config", 0777)
-
+	if state := Exists(filepath.Join(".", "config")); !state {
+		err := os.Mkdir(filepath.Join(".", "config"), 0755)
 		if err != nil {
 			return fmt.Errorf("error creating config directory: %v", err)
 		}
@@ -41,24 +39,21 @@ func CreateConfigDirectories() error {
 }
 
 func CreateConfigFiles() error {
-
-	if state := Exists("./config/config.json"); !state {
-		file, err := os.Create("./config/config.json")
-
+	configPath := filepath.Join(".", "config", "config.json")
+	if state := Exists(configPath); !state {
+		file, err := os.Create(configPath)
 		if err != nil {
 			return fmt.Errorf("error creating config.json: %v", err)
 		}
-
 		file.Close()
 	}
 
-	if state := Exists("./config/timer.json"); !state {
-		file, err := os.Create("./config/timer.json")
-
+	timerPath := filepath.Join(".", "config", "timer.json")
+	if state := Exists(timerPath); !state {
+		file, err := os.Create(timerPath)
 		if err != nil {
-			return fmt.Errorf("error creating timer.json:: %v", err)
+			return fmt.Errorf("error creating timer.json: %v", err)
 		}
-
 		file.Close()
 	}
 
@@ -67,19 +62,21 @@ func CreateConfigFiles() error {
 
 // puts json default values in config files
 func WriteConfigDefaults() error {
-	if IsEmpty("./config/config.json") {
+	configPath := filepath.Join(".", "config", "config.json")
+	if IsEmpty(configPath) {
 		configDefault := ConfigJson{
 			GithubPAT:       "",
 			Activity:        "",
 			CommitFrequency: 0,
 		}
 
-		if err := writeJSON("./config/config.json", configDefault); err != nil {
+		if err := writeJSON(configPath, configDefault); err != nil {
 			return fmt.Errorf("error writing defaults to config.json: %v", err)
 		}
 	}
 
-	if IsEmpty("./config/timer.json") {
+	timerPath := filepath.Join(".", "config", "timer.json")
+	if IsEmpty(timerPath) {
 		timerDefault := TimerJson{
 			TrackedMinutes:      0,
 			TotalSessionMinutes: 0,
@@ -87,7 +84,7 @@ func WriteConfigDefaults() error {
 			LastUpdate:          "",
 		}
 
-		if err := writeJSON("./config/timer.json", timerDefault); err != nil {
+		if err := writeJSON(timerPath, timerDefault); err != nil {
 			return fmt.Errorf("error writing defaults to timer.json: %v", err)
 		}
 	}
@@ -102,7 +99,8 @@ func WriteTimerDefaults() error {
 		NumberOfCommits:     0,
 		LastUpdate:          "",
 	}
-	if err := writeJSON("./config/timer.json", timerDefault); err != nil {
+	timerPath := filepath.Join(".", "config", "timer.json")
+	if err := writeJSON(timerPath, timerDefault); err != nil {
 		return fmt.Errorf("error writing defaults to timer.json: %v", err)
 	}
 	return nil
@@ -135,6 +133,5 @@ func IsDirectory(path string) bool {
 
 func Exists(path string) bool {
 	_, err := os.Stat(path)
-
 	return err == nil
 }

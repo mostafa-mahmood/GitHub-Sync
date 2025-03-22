@@ -4,12 +4,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 func ReadTimer() (TimerJson, error) {
 	var timer TimerJson
 
-	data, err := os.ReadFile("./config/timer.json")
+	timerPath := filepath.Join(".", "config", "timer.json")
+	data, err := os.ReadFile(timerPath)
 	if err != nil {
 		return timer, fmt.Errorf("error reading timer.json: %v", err)
 	}
@@ -25,7 +27,8 @@ func ReadTimer() (TimerJson, error) {
 func ReadConfig() (ConfigJson, error) {
 	var config ConfigJson
 
-	data, err := os.ReadFile("./config/config.json")
+	configPath := filepath.Join(".", "config", "config.json")
+	data, err := os.ReadFile(configPath)
 	if err != nil {
 		return config, fmt.Errorf("error reading config.json: %v", err)
 	}

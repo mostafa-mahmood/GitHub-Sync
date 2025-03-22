@@ -3,7 +3,6 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -54,23 +53,23 @@ func CreateSpecialRepo(PAT string) error {
 
 	req, err := http.NewRequest("POST", "https://api.github.com/user/repos", strings.NewReader(data))
 	if err != nil {
-		fmt.Println(err)
+		return fmt.Errorf("failed to create request: %v", err)
 	}
 
 	req.Header.Set("Authorization", "token "+PAT)
 	req.Header.Set("Content-Type", "application/json")
 
-	client := &http.Client{}
+	client := &http.Client{Timeout: 10 * time.Second}
 
 	res, err := client.Do(req)
 	if err != nil {
-		fmt.Println(err)
+		return fmt.Errorf("failed to execute request: %v", err)
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusCreated {
-		log.Fatalf("Failed: %d - %s", res.StatusCode, http.StatusText(res.StatusCode))
+		return fmt.Errorf("failed to create repository: %d - %s", res.StatusCode, http.StatusText(res.StatusCode))
 	}
 
 	return nil
@@ -123,7 +122,9 @@ func GetGitHubUsername(PAT string) (string, error) {
 	}
 
 	var result map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&result)
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return "", fmt.Errorf("failed to decode response: %v", err)
+	}
 
 	username, ok := result["login"].(string)
 	if !ok {

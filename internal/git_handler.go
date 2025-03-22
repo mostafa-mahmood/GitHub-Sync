@@ -4,22 +4,23 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"github.com/mostafa-mahmood/GitHub-Sync/utils"
 )
 
-// Handels git operations: clone, commit, push
+// Handles git operations: clone, commit, push
 
 func IsRepoCloned() bool {
-	_, err := os.Stat("repo/Activities/.git")
+	_, err := os.Stat(filepath.Join("repo", "Activities", ".git"))
 	return !os.IsNotExist(err)
 }
 
 func CloneRepo(username, PAT string) error {
 	PAT = strings.TrimSpace(PAT)
 	repoPath := "repo"
-	repoActivitiesPath := "repo/Activities"
+	repoActivitiesPath := filepath.Join("repo", "Activities")
 
 	// Check if "repo" exists but is a file
 	if utils.Exists(repoPath) && !utils.IsDirectory(repoPath) {
@@ -54,10 +55,12 @@ func CloneRepo(username, PAT string) error {
 }
 
 func CommitAndPushChanges(message string) error {
+	repoPath := filepath.Join("repo", "Activities")
+
 	cmds := [][]string{
-		{"git", "-C", "repo/Activities", "add", "--all"},
-		{"git", "-C", "repo/Activities", "commit", "-m", message},
-		{"git", "-C", "repo/Activities", "push", "-f"},
+		{"git", "-C", repoPath, "add", "--all"},
+		{"git", "-C", repoPath, "commit", "-m", message},
+		{"git", "-C", repoPath, "push", "-f"},
 	}
 
 	for _, cmdArgs := range cmds {
@@ -73,7 +76,7 @@ func CommitAndPushChanges(message string) error {
 }
 
 func EnsureRepoFiles() error {
-	repoPath := "repo/Activities"
+	repoPath := filepath.Join("repo", "Activities")
 
 	// Ensure the repo directory exists
 	if !utils.Exists(repoPath) {
@@ -84,7 +87,7 @@ func EnsureRepoFiles() error {
 	}
 
 	// Check and create README.md
-	readmePath := repoPath + "/README.md"
+	readmePath := filepath.Join(repoPath, "README.md")
 	if !utils.Exists(readmePath) {
 		content := []byte(`
 ### Hey there, fellow coder! 👋  
@@ -92,17 +95,17 @@ func EnsureRepoFiles() error {
 ## What is this?
 Ever coded daily for hours and finally pushed your changes after a while, and GitHub was like: **"Oh, so you only worked today, huh?"**
 And it counts as a single contribution for the whole week.  
-Yeah, same. GitHub activity tracking is a bit... let’s say, "unreliable" (*cough* unfair *cough*)
+Yeah, same. GitHub activity tracking is a bit... let's say, "unreliable" (*cough* unfair *cough*)
 And the contribution graph might be the only way for others to know your coding activity.
 
-That’s where [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) comes to the save
+That's where [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) comes to the save
 
 ## How does this work?
 This bad boy keeps track of your local coding sessions. If your editor is open, it counts the minutes.
 Once you hit 100 minutes, BAM 💥 — an automatic push to GitHub happens.
 
 ## Why?
-- So GitHub shows you actually code and don’t just show up once a week.  
+- So GitHub shows you actually code and don't just show up once a week.  
 - So your contribution graph looks like a masterpiece, not a graveyard.
 
 Enjoy, and may your GitHub graph forever shine green! 🌱  
@@ -115,7 +118,7 @@ Enjoy, and may your GitHub graph forever shine green! 🌱
 	}
 
 	// Check and create log.json
-	logPath := repoPath + "/log.txt"
+	logPath := filepath.Join(repoPath, "log.txt")
 	if !utils.Exists(logPath) {
 		err := os.WriteFile(logPath, []byte(""), 0644)
 		if err != nil {

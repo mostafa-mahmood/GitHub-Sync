@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/mostafa-mahmood/GitHub-Sync/utils"
@@ -31,16 +32,16 @@ func FormatCommitMessage() (string, error) {
 
 	now := time.Now()
 	date := now.Format("2006-01-02")
-	time := now.Format("15:04:05")
+	timeStr := now.Format("15:04:05")
 
 	commitMessage := fmt.Sprintf("Work Session: %vhr | Activity: %v | Editor Used: %v | Date: %v | Time: %v",
-		workSession, activity, editor, date, time)
+		workSession, activity, editor, date, timeStr)
 
 	return commitMessage, nil
 }
 
 func AppendToLog(message string) error {
-	filePath := "./repo/Activities/log.txt"
+	filePath := filepath.Join(".", "repo", "Activities", "log.txt")
 
 	if repoCloned := IsRepoCloned(); !repoCloned {
 		return fmt.Errorf("can't append repository is not cloned")
