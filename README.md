@@ -18,6 +18,7 @@ The purpose of GitHub-Sync is to accurately reflect your actual coding activity 
 ## How It Works 🛠️
 - **Detects Your Editor:** Detects when your code editor is open (e.g., VS Code, IntelliJ, Vim, etc.).
 - **Tracks Coding Time:** It tracks how long you’ve been coding and commits your progress at regular intervals.
+- **Creates Special Repo:** Creates a repo called Activities where the logs are being pushed.
 - **Syncs with GitHub:** Your contributions are automatically pushed to GitHub, so your graph stays green. 🌱
 
 ---
