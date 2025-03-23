@@ -1,6 +1,4 @@
 # GitHub-Sync (ghs)
-
-## Overview
 GitHub-Sync (or ghs for short) is a CLI tool designed to fix your GitHub contribution graph.     
 Ever coded for hours daily 🧑🏻‍💻, only to push your changes days later and have GitHub count it as a single contribution like you only worked that one day?   
 
