@@ -2,14 +2,8 @@ package utils
 
 import (
 	"fmt"
-	"path/filepath"
 	"strings"
 	"time"
-)
-
-var (
-	configPath = filepath.Join(".", "config", "config.json")
-	timerPath  = filepath.Join(".", "config", "timer.json")
 )
 
 func updateConfig(modifier func(*ConfigJson) error) error {
@@ -20,6 +14,11 @@ func updateConfig(modifier func(*ConfigJson) error) error {
 
 	if err := modifier(&configStruct); err != nil {
 		return err
+	}
+
+	configPath, err := GetConfigFilePath()
+	if err != nil {
+		return fmt.Errorf("error getting config file path: %v", err)
 	}
 
 	return writeJSON(configPath, configStruct)
@@ -34,6 +33,11 @@ func updateTimer(modifier func(*TimerJson) error) error {
 
 	if err := modifier(&timerStruct); err != nil {
 		return err
+	}
+
+	timerPath, err := GetTimerFilePath()
+	if err != nil {
+		return fmt.Errorf("error getting timer file path: %v", err)
 	}
 
 	return writeJSON(timerPath, timerStruct)

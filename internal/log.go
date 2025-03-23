@@ -43,7 +43,7 @@ func FormatCommitMessage() (string, error) {
 func AppendToLog(message string) error {
 	filePath := filepath.Join(".", "repo", "Activities", "log.txt")
 
-	if repoCloned := IsRepoCloned(); !repoCloned {
+	if repoCloned, _ := IsRepoCloned(); !repoCloned {
 		return fmt.Errorf("can't append repository is not cloned")
 	}
 

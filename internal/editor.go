@@ -62,7 +62,6 @@ func IsEditorOpened() (bool, string, error) {
 		"eclipse":     "Eclipse",
 	}
 
-	// Check if any editor is running
 	for procName, editorName := range editorMap {
 		// On Windows, more precise matching
 		if os == "windows" {
@@ -74,10 +73,13 @@ func IsEditorOpened() (bool, string, error) {
 			// On Unix, need to be more careful about partial matches
 			lines := strings.Split(outputstr, "\n")
 			for _, line := range lines {
-				// Check for word boundaries to avoid false positives
-				if strings.Contains(line, " "+procName+" ") ||
-					strings.HasSuffix(line, " "+procName) ||
-					strings.Contains(line, "/"+procName) {
+				// Convert line and procName to lowercase for case-insensitive matching
+				lowerLine := strings.ToLower(line)
+				lowerProcName := strings.ToLower(procName)
+
+				if strings.Contains(lowerLine, " "+lowerProcName+" ") ||
+					strings.HasSuffix(lowerLine, " "+lowerProcName) ||
+					strings.Contains(lowerLine, "/"+lowerProcName) {
 					return true, editorName, nil
 				}
 			}

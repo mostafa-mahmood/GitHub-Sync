@@ -48,7 +48,8 @@ func CreateSpecialRepo(PAT string) error {
 	data := `{
 		"name": "Activities",
 		"private": false,
-		"auto_init": false
+		"auto_init": false,
+		"description": "Repository for tracking daily coding activities"
 	}`
 
 	req, err := http.NewRequest("POST", "https://api.github.com/user/repos", strings.NewReader(data))

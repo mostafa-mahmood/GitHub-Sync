@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -44,10 +45,22 @@ Once the commit interval is reached, changes are committed and pushed to GitHub.
 		}
 
 		// Save the PID to a file in the config directory
+		execDir := filepath.Dir(executablePath)
+
+		// Create a config directory relative to the executable location
+		configDir := filepath.Join(execDir, "config")
+		if err := os.MkdirAll(configDir, 0755); err != nil {
+			fmt.Println("❌ Error creating config directory:", err)
+			os.Exit(1)
+		}
+
+		// Save the PID to a file in the config directory
+		pidPath := filepath.Join(configDir, "ghs.pid")
 		pidString := strconv.Itoa(backgroundCmd.Process.Pid)
-		err = os.WriteFile("./config/ghs.pid", []byte(pidString), 0644)
+		err = os.WriteFile(pidPath, []byte(pidString), 0644)
 		if err != nil {
-			fmt.Println("⚠️ Warning: Could not save process ID:", err)
+			fmt.Println("❌ Error saving process ID:", err)
+			os.Exit(1)
 		}
 
 		fmt.Println("⏳ Tracking Started, Happy Coding")
@@ -60,9 +73,9 @@ var timerCmd = &cobra.Command{
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		for {
-			internal.PeriodicCheck()
-			// Sleep for 5 minutes before checking again
+			// Sleep for 5 minutes before checking
 			time.Sleep(5 * time.Minute)
+			internal.PeriodicCheck()
 		}
 	},
 }

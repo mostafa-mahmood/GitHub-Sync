@@ -20,16 +20,61 @@ type ConfigJson struct {
 	CommitFrequency int    `json:"Commit_Frequency"`
 }
 
+// GetBaseDir returns the base directory for all configuration
+func GetBaseDir() (string, error) {
+	// Get executable path
+	execPath, err := os.Executable()
+	if err != nil {
+		return "", fmt.Errorf("error getting executable path: %v", err)
+	}
+
+	// Get directory containing the executable
+	execDir := filepath.Dir(execPath)
+	return execDir, nil
+}
+
+// GetConfigDir returns the path to the config directory
+func GetConfigDir() (string, error) {
+	baseDir, err := GetBaseDir()
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Join(baseDir, "config"), nil
+}
+
+// GetRepoDir returns the path to the repo directory
+func GetRepoDir() (string, error) {
+	baseDir, err := GetBaseDir()
+	if err != nil {
+		return "", err
+	}
+
+	return filepath.Join(baseDir, "repo"), nil
+}
+
 func CreateConfigDirectories() error {
-	if state := Exists(filepath.Join(".", "repo")); !state {
-		err := os.Mkdir(filepath.Join(".", "repo"), 0755)
+	// Get repo directory path
+	repoDir, err := GetRepoDir()
+	if err != nil {
+		return err
+	}
+
+	if state := Exists(repoDir); !state {
+		err := os.MkdirAll(repoDir, 0755)
 		if err != nil {
 			return fmt.Errorf("error creating repo directory: %v", err)
 		}
 	}
 
-	if state := Exists(filepath.Join(".", "config")); !state {
-		err := os.Mkdir(filepath.Join(".", "config"), 0755)
+	// Get config directory path
+	configDir, err := GetConfigDir()
+	if err != nil {
+		return err
+	}
+
+	if state := Exists(configDir); !state {
+		err := os.MkdirAll(configDir, 0755)
 		if err != nil {
 			return fmt.Errorf("error creating config directory: %v", err)
 		}
@@ -39,7 +84,12 @@ func CreateConfigDirectories() error {
 }
 
 func CreateConfigFiles() error {
-	configPath := filepath.Join(".", "config", "config.json")
+	configDir, err := GetConfigDir()
+	if err != nil {
+		return err
+	}
+
+	configPath := filepath.Join(configDir, "config.json")
 	if state := Exists(configPath); !state {
 		file, err := os.Create(configPath)
 		if err != nil {
@@ -48,7 +98,7 @@ func CreateConfigFiles() error {
 		file.Close()
 	}
 
-	timerPath := filepath.Join(".", "config", "timer.json")
+	timerPath := filepath.Join(configDir, "timer.json")
 	if state := Exists(timerPath); !state {
 		file, err := os.Create(timerPath)
 		if err != nil {
@@ -60,9 +110,13 @@ func CreateConfigFiles() error {
 	return nil
 }
 
-// puts json default values in config files
 func WriteConfigDefaults() error {
-	configPath := filepath.Join(".", "config", "config.json")
+	configDir, err := GetConfigDir()
+	if err != nil {
+		return err
+	}
+
+	configPath := filepath.Join(configDir, "config.json")
 	if IsEmpty(configPath) {
 		configDefault := ConfigJson{
 			GithubPAT:       "",
@@ -75,7 +129,7 @@ func WriteConfigDefaults() error {
 		}
 	}
 
-	timerPath := filepath.Join(".", "config", "timer.json")
+	timerPath := filepath.Join(configDir, "timer.json")
 	if IsEmpty(timerPath) {
 		timerDefault := TimerJson{
 			TrackedMinutes:      0,
@@ -93,17 +147,46 @@ func WriteConfigDefaults() error {
 }
 
 func WriteTimerDefaults() error {
+	configDir, err := GetConfigDir()
+	if err != nil {
+		return err
+	}
+
 	timerDefault := TimerJson{
 		TrackedMinutes:      0,
 		TotalSessionMinutes: 0,
 		NumberOfCommits:     0,
 		LastUpdate:          "",
 	}
-	timerPath := filepath.Join(".", "config", "timer.json")
+	timerPath := filepath.Join(configDir, "timer.json")
 	if err := writeJSON(timerPath, timerDefault); err != nil {
 		return fmt.Errorf("error writing defaults to timer.json: %v", err)
 	}
 	return nil
+}
+
+func GetConfigFilePath() (string, error) {
+	configDir, err := GetConfigDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(configDir, "config.json"), nil
+}
+
+func GetTimerFilePath() (string, error) {
+	configDir, err := GetConfigDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(configDir, "timer.json"), nil
+}
+
+func GetPidFilePath() (string, error) {
+	configDir, err := GetConfigDir()
+	if err != nil {
+		return "", err
+	}
+	return filepath.Join(configDir, "ghs.pid"), nil
 }
 
 func writeJSON(filePath string, data interface{}) error {

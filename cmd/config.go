@@ -37,7 +37,7 @@ like PAT, Activity, or Commit Frequency:
 				fmt.Println(err)
 			}
 
-			fmt.Printf("📋 Current Configurations \n🔹 Activity: %v \n🔹 Commit Frequency %v",
+			fmt.Printf("📋 Current Configurations \n🔹 Activity: %v \n🔹 Commit Frequency: %v",
 				currentActivity, currentFrequency)
 		}
 

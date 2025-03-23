@@ -40,7 +40,7 @@ func StartTracking() {
 	if pat == "" {
 		fmt.Print("🔑 Enter Your GitHub Personal Access Token: ")
 		pat, _ = reader.ReadString('\n')
-		pat = pat[:len(pat)-1] // Remove the newline character
+		pat = pat[:len(pat)-1]
 
 		valid, err := IsPatValid(pat)
 		if err != nil {
@@ -53,7 +53,7 @@ func StartTracking() {
 			}
 
 			pat, _ = reader.ReadString('\n')
-			pat = pat[:len(pat)-1] // Remove the newline character
+			pat = pat[:len(pat)-1]
 
 			valid, err = IsPatValid(pat)
 
@@ -70,7 +70,6 @@ func StartTracking() {
 
 		fmt.Println("✅ PAT Saved Successfully!")
 	} else {
-		// Validate the existing PAT
 		fmt.Print("🔍 Validating Existing PAT")
 		for i := 0; i < 3; i++ {
 			time.Sleep(500 * time.Millisecond)
@@ -87,7 +86,7 @@ func StartTracking() {
 		if !valid {
 			fmt.Println("❌ PAT Is No Longer Valid. Please Enter A Valid One: ")
 			pat, _ = reader.ReadString('\n')
-			pat = pat[:len(pat)-1] // Remove the newline character
+			pat = pat[:len(pat)-1]
 		}
 
 		fmt.Println("✅ PAT Is Still Valid")
@@ -109,7 +108,7 @@ func StartTracking() {
 		}
 	}
 
-	if repoCloned := IsRepoCloned(); !repoCloned {
+	if repoCloned, _ := IsRepoCloned(); !repoCloned {
 		username, err := GetGitHubUsername(pat)
 		if err != nil {
 			fmt.Println(err)

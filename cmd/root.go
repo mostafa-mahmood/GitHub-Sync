@@ -21,7 +21,6 @@ var rootCmd = &cobra.Command{
 - Stores logs of commit history`,
 }
 
-// Execute runs the CLI and handles errors.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println("Error:", err)
@@ -30,6 +29,4 @@ func Execute() {
 }
 
 func init() {
-	// Placeholder: We will load config in the future
-	// rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "Config file (default is $HOME/.ghs.yaml)")
 }
