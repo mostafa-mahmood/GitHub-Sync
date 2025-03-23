@@ -7,9 +7,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strconv"
-	"syscall"
 
 	"github.com/mostafa-mahmood/GitHub-Sync/utils"
 	"github.com/spf13/cobra"
@@ -61,45 +59,6 @@ var stopCmd = &cobra.Command{
 		os.Remove(pidFile)
 		fmt.Println("✅ Tracking stopped successfully")
 	},
-}
-
-func killProcess(pid int) error {
-	process, err := os.FindProcess(pid)
-	if err != nil {
-		return fmt.Errorf("process not found: %v", err)
-	}
-
-	if runtime.GOOS == "windows" {
-		dll, err := syscall.LoadDLL("kernel32.dll")
-		if err != nil {
-			return fmt.Errorf("failed to load kernel32.dll: %v", err)
-		}
-		defer dll.Release()
-
-		proc, err := dll.FindProc("TerminateProcess")
-		if err != nil {
-			return fmt.Errorf("failed to find TerminateProcess: %v", err)
-		}
-
-		handle, err := syscall.OpenProcess(syscall.PROCESS_TERMINATE, false, uint32(pid))
-		if err != nil {
-			return fmt.Errorf("failed to open process: %v", err)
-		}
-		defer syscall.CloseHandle(handle)
-
-		ret, _, err := proc.Call(uintptr(handle), 0)
-		if ret == 0 {
-			return fmt.Errorf("failed to terminate process: %v", err)
-		}
-	} else {
-		if err := process.Signal(os.Interrupt); err != nil {
-			if err := process.Kill(); err != nil {
-				return fmt.Errorf("failed to kill process: %v", err)
-			}
-		}
-	}
-
-	return nil
 }
 
 func init() {
