@@ -22,22 +22,6 @@ The purpose of GitHub-Sync is to accurately reflect your actual coding activity 
 - **Syncs with GitHub:** Your contributions are automatically pushed to GitHub, so your graph stays green. 🌱
 
 ---
-## What Does It Commit? 📝
-GitHub-Sync commits detailed logs of your coding activity, it appends it to log.txt and Each commit message includes:
-
-- **Work Session**: Total hours spent coding during the session.
-
-- **Activity**: A description of what you’re working on.
-
-- **Editor Used**: The code editor detected during the session (e.g., VS Code, IntelliJ, Vim).
-
-- **Date and Time**: The exact date and time of the commit.
-
-Example of commit message:   
-```
-Work Session: 2hr | Activity: Working on a cool project | Editor Used: VS Code | Date: 2023-10-15 | Time: 14:30:45
-```
----
 
 ## Commands 📄
 
@@ -85,7 +69,22 @@ Print the version number, build date, and Git commit.
 ```sh
    ghs version
 ```
+---
+## What Does It Commit? 📝
+GitHub-Sync commits detailed logs of your coding activity, it appends it to log.txt and Each commit message includes:
 
+- **Work Session**: Total hours spent coding during the session.
+
+- **Activity**: A description of what you’re working on.
+
+- **Editor Used**: The code editor detected during the session (e.g., VS Code, IntelliJ, Vim).
+
+- **Date and Time**: The exact date and time of the commit.
+
+Example of commit message:   
+```
+Work Session: 2hr | Activity: Working on a cool project | Editor Used: VS Code | Date: 2023-10-15 | Time: 14:30:45
+```
 ---
 
 ## Installation 🛠️
