@@ -118,22 +118,16 @@ func EnsureRepoFiles() error {
 ### Hey there, fellow coder! 👋  
 
 ## What is this?
-Ever coded daily for hours and finally pushed your changes after a while, and GitHub was like: **"Oh, so you only worked today, huh?"**   
-And it counts as a single contribution for the whole week!   
-Yeah, same. GitHub activity tracking is a bit... let's say, "unreliable" (*cough* unfair *cough*)   
-And the contribution graph might be the only way for others to know your coding activity.   
+This repository is automatically managed by [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) (ghs),   
+a CLI tool that ensures your GitHub contribution graph accurately reflects your actual coding activity.   
 
-That's where [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) comes to the rescue   
+This repository acts as a logbook for your coding sessions. It keeps track of when and how long you’ve been coding,   
+along with details like the editor you used and a description of your current activity.   
+Logging your session details into log.txt at regular intervals.
 
-## How does this work?
-This bad boy keeps track of your local coding sessions. If your editor is open, it counts the minutes.   
-Once you hit 100 minutes, BAM 💥 — an automatic push to GitHub happens.   
-
-## Why?
-- So GitHub shows you actually code and don't just show up once a week.   
-- So your contribution graph looks like a masterpiece, not a graveyard.   
-
-Enjoy, and may your GitHub graph forever shine green! 🌱
+### Learn More
+To learn more about how GitHub-Sync works or to install it,    
+check out the main project repository: [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync)
 `)
 
 		err := os.WriteFile(readmePath, content, 0644)
