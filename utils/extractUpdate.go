@@ -24,7 +24,6 @@ func updateConfig(modifier func(*ConfigJson) error) error {
 	return writeJSON(configPath, configStruct)
 }
 
-// UpdateTimer provides a generic way to update the timer file
 func updateTimer(modifier func(*TimerJson) error) error {
 	timerStruct, err := ReadTimer()
 	if err != nil {
@@ -105,7 +104,7 @@ func GetTrackedMinutes() (int, error) {
 
 func UpdateTrackedMinutes() error {
 	return updateTimer(func(t *TimerJson) error {
-		t.TrackedMinutes += 5
+		t.TrackedMinutes += 1
 		return nil
 	})
 }
@@ -127,7 +126,7 @@ func GetTotalSessionMinutes() (int, error) {
 
 func UpdateTotalSessionMinutes() error {
 	return updateTimer(func(t *TimerJson) error {
-		t.TotalSessionMinutes += 5
+		t.TotalSessionMinutes += 1
 		return nil
 	})
 }

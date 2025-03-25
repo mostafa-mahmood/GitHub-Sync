@@ -73,8 +73,7 @@ var timerCmd = &cobra.Command{
 	Hidden: true,
 	Run: func(cmd *cobra.Command, args []string) {
 		for {
-			// Sleep for 5 minutes before checking
-			time.Sleep(5 * time.Minute)
+			time.Sleep(1 * time.Minute)
 			internal.PeriodicCheck()
 		}
 	},

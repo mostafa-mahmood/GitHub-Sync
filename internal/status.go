@@ -41,10 +41,10 @@ func PrintStatus() error {
 
 	var statusMessage string
 	if editorOpened {
-		statusMessage = fmt.Sprintf("📈 Tracker Status \n🔵 Tracked Work: %v \n🔵 Last Update: %v \n🔵 Time Remaining Before Next Update: %v \n🔵 Editor: %v(Running)",
+		statusMessage = fmt.Sprintf("📈 Tracker Status \n🔹Tracked Work: %v \n🔹Last Update: %v \n🔹Time Remaining Before Next Commit: %v \n🔹Editor: %v(Running)",
 			trackedWork, lastUpdate, minutesRemainning, editor)
 	} else {
-		statusMessage = fmt.Sprintf("📈Tracker Status \n🔵 Tracked Work: %v \n🔵 Last Update: %v \n🔵 Time Remaining Before Next Update: %v \n🔵 Editor: No Editor Detected",
+		statusMessage = fmt.Sprintf("📈Tracker Status \n🔹Tracked Work: %v \n🔹Last Update: %v \n🔹Time Remaining Before Next Commit: %v \n🔹Editor: No Editor Detected",
 			trackedWork, lastUpdate, minutesRemainning)
 	}
 

@@ -65,7 +65,7 @@ func CloneRepo(username, PAT string) error {
 		return fmt.Errorf("failed to clone repo: %v", err)
 	}
 
-	fmt.Println("Repository cloned successfully inside 'repo/Activities/'! 🎉")
+	fmt.Println("Repository cloned successfully inside 'repo/Activities/'!")
 	return nil
 }
 
@@ -115,19 +115,14 @@ func EnsureRepoFiles() error {
 	readmePath := filepath.Join(repoActivitiesPath, "README.md")
 	if !utils.Exists(readmePath) {
 		content := []byte(`
-### Hey there, fellow coder! 👋  
+### Hey there, fellow programmer! 👋  
 
 ## What is this?
-This repository is automatically managed by [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) (ghs),   
-a CLI tool that ensures your GitHub contribution graph accurately reflects your actual coding activity.   
+This repository is automatically managed by [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync) (ghs).      
 
-This repository acts as a logbook for your coding sessions. It keeps track of when and how long you’ve been coding,   
-along with details like the editor you used and a description of your current activity.   
+This repository acts as a logbook for my coding sessions. It keeps track of when and how long I’ve been coding,   
+along with details like the editor used and a description of current activity.   
 Logging your session details into log.txt at regular intervals.
-
-### Learn More
-To learn more about how GitHub-Sync works or to install it,    
-check out the main project repository: [GitHub-Sync](https://github.com/mostafa-mahmood/GitHub-Sync)
 `)
 
 		err := os.WriteFile(readmePath, content, 0644)
