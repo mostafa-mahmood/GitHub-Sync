@@ -4,7 +4,7 @@ Ever coded for hours daily 🧑🏻‍💻, only to push your changes days later
 
 Well, that's why I made this tool! It tracks your local coding activity and syncs it 🔗 with GitHub at regular intervals.    
 
-## Why Use GitHub-Sync? 🤔   
+## Why Use GitHub-Sync?   
 You might be wondering, "Aren’t there already tools that can turn my GitHub contribution graph green without me even coding?" Well, yes, there are. But here’s the thing: GitHub-Sync isn’t about gaming the system.   
 
 The purpose of GitHub-Sync is to accurately reflect your actual coding activity on your GitHub contribution graph. It’s not just turning your graph green for the sake of it:   
